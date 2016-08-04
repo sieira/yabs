@@ -1,0 +1,62 @@
+#  ==============
+#  == auto_env ==
+#  ==============
+#
+#  Change the virtual environment automaticaly
+#  on directory change
+#
+#  functions:
+#   - auto_env:
+#     input: [on|off]
+#     activate/deactivate auto_env
+#   - activate_virtualenv:
+#     activate the closest virtual env
+#     this is done automaticaly when auto_env is on
+#
+auto_env() {
+  if [[ $1 == "on" ]]
+  then
+    echo -n $INFO "Activating auto_env..."
+    precmd_functions=("${(@)precmd_functions:#activate_virtualenv}")
+    precmd_functions+=('activate_virtualenv')
+    echo $OK
+  elif [[ $1 == "off" ]]
+  then
+    echo -n $INFO "Deactivating auto_env..."
+    precmd_functions=("${(@)precmd_functions:#activate_virtualenv}")
+    echo $OK
+  fi
+}
+
+activate_virtualenv() {
+  current_path=$PWD
+  virtualenv_path=""
+
+  # Traverse the arborescence to find the closest existing virtualenv
+  while [[ $current_path != "" ]]
+  do
+    if [[ -d ${current_path}/.venv ]]
+    then
+      virtualenv_path=${current_path}/.venv
+      break
+    else
+      current_path=${current_path%/*}
+    fi;
+  done
+
+  # Change the current virtualenv if one was detected.
+  if [[ -n $virtualenv_path ]]
+  then
+    if [[ $VIRTUAL_ENV != $virtualenv_path ]]
+    then
+      source ${virtualenv_path}/bin/activate
+    fi
+  elif [[ -n $VIRTUAL_ENV && $VIRTUAL_ENV != "" ]]
+  then
+    deactivate
+  fi;
+  unset current_path
+  unset virtualenv_path
+}
+
+precmd_functions+=('activate_virtualenv')

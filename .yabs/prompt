@@ -1,0 +1,51 @@
+#!/bin/zsh
+# ============
+# == PROMPT ==
+# ============
+#
+# Set prompt as:
+#
+# (venv)user@host dir(git branch with color status) %  
+#       (last command execution time in seconds) [exit status of last command]
+#
+# Enable autocompletion highlight 
+#
+#
+# Reload on reprompt
+setopt PROMPT_SUBST
+# Allow the color formatting via %F
+setopt PROMPTPERCENT
+# Load colors
+autoload -U colors && colors
+
+
+# When the shell first launches, there is no start time
+START_TIME_S=$(($(date +'%s')))
+
+preexec() {
+  START_TIME_S=$(($(date +'%s')))
+}
+
+precmd() {
+  # Id start_time does not exist, it's because nothing was executed
+  if [ $START_TIME_S ]; then
+    END_TIME_S=$(($(date +'%s')))
+    LAST_TIME_S=$(($END_TIME_S-$START_TIME_S))
+    # clean env
+    unset START_TIME_S
+    unset END_TIME_S
+  else
+    LAST_TIME_S="0"
+  fi
+}
+
+PROMPT='%F{green}%n%f@%F{blue}%m %F{yellow}%1~$BRANCH%f %# '
+RPROMPT='(${LAST_TIME_S}s)[%F{yellow}%?%f]'
+
+# Enable autocompletion highlight
+#zstyle ':completion:*' menu select
+zstyle ':completion:*:*:git:*' script /usr/local/etc/bash_completion.d/git-completion.bash
+fpath=(/usr/local/share/zsh-completions $fpath)
+autoload -U compinit && compinit
+zmodload -i zsh/complist
+zstyle ':completion:*' menu select

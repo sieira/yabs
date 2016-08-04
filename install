@@ -1,0 +1,25 @@
+#! /bin/zsh
+if [[ $ZSH_EVAL_CONTEXT == 'toplevel' ]]
+then
+    echo "Usage:\n  source install"
+    exit 1
+fi
+
+cp --backup=t --suffix=.pre_yabs .zshrc $HOME
+cp -R .yabs $HOME
+source $HOME/.zshrc
+
+if [[ "~/.gitconfig" ]]
+then
+    request_confirmation "do you want to overwrite .gitconfig?" && cp .gitconfig ~
+fi
+
+if [[ "~/.vimrc" ]]
+then
+    request_confirmation "do you want to overwrite .vimrc?" 
+    if [ $? -eq 0 ]
+    then
+        cp .vimrc ~
+        # TODO install Bundle and configure vim
+    fi
+fi

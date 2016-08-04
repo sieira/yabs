@@ -1,0 +1,119 @@
+#!/bin/zsh
+#  =========
+#  == git ==
+#  =========
+#
+#  Contains some utilities allowing to ease complex git tasks
+#  if keeps the BRANCH env updated on each reprompt
+#
+#  envs:
+#   - BRANCH:
+#     Contains the current git branch after calling set_git_branch
+#
+#  functions:
+#   - is_git_repository:
+#     Exit status:
+#      - 0 if the current dir is part of a git repository
+#      - 128 if it's not
+#   - set_git_branch:
+#     updates de value of $BRANCH to the branch in the current dir
+#   - clean_branches:
+#     Locally delete all the git branches that have already been merged in
+#     origin.
+#
+#     WARNING:
+#      When called from a merged branch with non staged changes,
+#      it will pop those changes to master
+#
+#  aliases:
+#   - gitup:
+#     Fetch and rebase all locally-tracked remote branches,
+#     keeping unstaged changes
+#
+alias gitup="git stash && git up && git stash pop"
+
+# Checks if the current dir is a repository
+is_git_repository() {
+    git branch > /dev/null 2>&1
+}
+
+# Sets the env BRANCH to the current branch name
+set_git_branch() {
+  git_status="$(git status 2> /dev/null)"
+
+  if [[ ${git_status} =~ "nothing added to commit but untracked files present" || ${git_status} =~ "working directory clean" ]]
+  then
+    state=%F{green}
+  elif [[ ${git_status} =~ "Changes not staged for commit:" ]]; then
+    state=%F{yellow}
+  elif [[ ${git_status} =~ "Changes to be committed" ]]; then
+    state=%F{blue}
+  else
+    state=%F{red}
+  fi
+
+  remote_pattern="Your branch is (.*) of"
+  if [[ ${git_status} =~ ${remote_pattern} ]]; then
+    if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
+      remote='%F{yellow}>'
+    else
+      remote='%F{yellow}<'
+    fi
+  else
+    remote='%F{green}•'
+  fi
+
+  diverge_pattern='Your branch and (.*) have diverged'
+  if [[ ${git_status} =~ ${diverge_pattern} ]]; then
+    remote='%F{red}ȣ'
+  fi
+
+  OLD_IFS=$IFS
+  IFS=$' \t\n'
+  branch_pattern="^# On branch ([^${IFS}]*)"
+  if [[ ${git_status} =~ ${branch_pattern} ]]; then
+    branch=${BASH_REMATCH[1]}
+  fi
+
+  git_branch=$(git branch 2>/dev/null| sed -n '/^\*/s/^\* //p')
+
+  if is_git_repository ; then
+    BRANCH=${state}(${git_branch})%f
+  else
+    BRANCH=''
+  fi
+  IFS=$OLD_IFS
+  unset OLD_IFS
+}
+
+# Clean merged branches
+clean_branches() {
+    BRANCH=$(git branch | grep --color=none '^*')
+    BRANCH=${BRANCH:2}
+
+    if [ $BRANCH != "master" ]
+    then
+      echo "\e[33m[i]\x1b[0m Temporarily moving to master..."
+      git stash &> /dev/null
+      git checkout master &> /dev/null
+      echo "\e[32;1m[\u2713]\x1b[0m"
+    fi
+
+    echo -n "deleting merged branches..."
+    for b in $(git branch -a --merged)
+    do
+        git br -d "$b" &>/dev/null
+    done
+    echo "\e[32;1m[\u2713]\x1b[0m"
+
+    if [ $(git branch | grep --color=none -c "^\  $BRANCH$") -gt 0 ]
+    then
+      echo "\e[33m[i]\x1b[0m Switching back to " $BRANCH "..."
+      git checkout $BRANCH
+      git stash pop
+      echo "\e[32;1m[\u2713]\x1b[0m"
+    fi
+}
+
+precmd_functions+=('set_git_branch')
+

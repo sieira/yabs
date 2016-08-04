@@ -1,0 +1,76 @@
+#!/bin/zsh
+#  ===============
+#  == yabsrc ==
+#  ===============
+#
+#  Manipulates the config file, creating one if it does not exist
+#  it avoids load malicious code injected on it. Removing the conflicting parts
+#  (despite code can be inserted like everywhere else)
+#
+#  envs:
+#   - YABS_CONFIG_FILE:
+#     currently active configuration file
+#
+#  functions:
+#   - yabsrc_set_value:
+#     input: value key
+#     stores/updates a new env in the config file, and loads it
+#   - yabsrc_set_array_value:
+#     input: value array
+#     stores/updates a new array env in the config file, and loads it
+#   - yabsrc_remove_key:
+#     removes an env from the config file, and unloads it
+#
+YABS_CONFIG_FILE=$HOME/.yabsrc
+
+# Create if it does not exist
+if [ ! -f $YABS_CONFIG_FILE ]
+then
+    touch $YABS_CONFIG_FILE
+fi
+
+# Secure stuff a bit, before someone gets harmed
+if egrep -q -v '^#|^[^ ]*=[^;]*' "$YABS_CONFIG_FILE"; then
+  echo "Config file is unclean, cleaning it..." >&2
+  cp $YABS_CONFIG_FILE $YABS_CONFIG_FILE.unsafe
+  chmod 400 $YABS_CONFIG_FILE.unsafe
+  egrep '^#|^[^ ]*=[^;&]*'  "$YABS_CONFIG_FILE" > "$YABS_CONFIG_FILE"
+fi
+
+# Load the config values
+source $YABS_CONFIG_FILE
+
+# Set a value for a key
+yabsrc_set_value() {
+  # Format the value as an array if more than one value is given
+  value="${@:2}"
+
+  # Check if the key exists
+  grep ^$1= $YABS_CONFIG_FILE >& /dev/null
+  if [ $? -ne 0 ]; then
+    # Tail il to the file
+    echo "$1=$value" >> $YABS_CONFIG_FILE
+  else
+    # Replace it
+    sed -i "s/\($1*=*\).*/\1"$value"/" $YABS_CONFIG_FILE
+  fi
+
+  # Load the new value, it is done this way so arrays are properly handled
+  eval $(cat $YABS_CONFIG_FILE | grep --color=none $1)
+  unset $value
+}
+
+yabsrc_set_array_value() {
+  yabsrc_set_value $1 "(${@:2})"
+}
+
+# Remove a key/value pair
+yabsrc_remove_key() {
+  # Check if the value exists
+  grep ^$1= $YABS_CONFIG_FILE >& /dev/null
+  if [ $? -eq 0 ]; then
+    # Remove the line and unset the env
+    sed "/^$1=/d" $YABS_CONFIG_FILE
+    unset $1
+  fi
+}

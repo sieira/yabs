@@ -1,0 +1,160 @@
+#  ===========
+#  == utils ==
+#  ===========
+#
+#  Contains some utilities
+#
+#  envs:
+#   - ERROR:
+#   - INFO:
+#   - OK:
+#   - INDETERMINATE:
+#     Color tags for script status feedback
+#
+#  aliases:
+#   - ls:
+#   - grep:
+#     use colors by default
+#   - reload:
+#     reload current .zshrc
+#   - clean:
+#     reload current .zshrc and clear
+#   - errcho:
+#     echo to stderr
+#
+#  functions:
+#   - run_on:
+#     Run a command in the given directory (relative to ~),
+#     activating the closest venv if found
+#   - help:
+#     Show a complete help for yabs, extracted form the comments
+#   - spinner:
+#     Show a spinner with a progress bar (only stops with SIGKILL and SIGTERM)
+#   - spinner_eval: Run a command showing a spinner instead of the command output
+#   - hex2dec:
+#   - dec2hex:
+#     convert from hexadecimal to decimal and vice-versa     
+#   - syntax:
+#     input: [on | off]
+#     Activate/deactivate commandline syntax highlighting
+#   - request_confirmation:
+#     input: [message]
+#     Prompt the user with a Y/N question preceeded by an optional message
+#     output: 0 if (Y)es, 1 if (N)o
+#
+# Colors and tags
+ERROR=$'\e[31m[E]\e[0m'
+INFO=$'\e[33m[i]\e[0m'
+OK=$'\e[32;1m\u2713\x1b[0m'
+QUESTION_MARK=$'\e[34;1m?>\x1b[0m'
+INDETERMINATE=$'\e[34;1m[?]\x1b[0m'
+
+# Run a command in a given venv
+run_on() {
+  if [[ $# -lt 2 ]]
+  then
+    echo "$ERROR Usage: $0 (path from ~) command [arg1 ... argN]"
+    return 1
+  fi
+  
+  currwd=${PWD}
+  cd ~/$1 2> /dev/null
+  if [[ $? -ne 0 ]]
+  then
+    echo "$ERROR Unknown path: $1"
+    unset currwd
+    return 2
+  fi
+  active_yabs_virtualenv
+
+  eval ${@:2}
+
+  deactivate 2> /dev/null
+  cd ${currwd}
+  unset currwd
+}
+
+# Prettify some stuff
+alias ls="ls --color"
+alias grep="grep --color=auto"
+
+# Reload environment
+alias reload='source $HOME/.zshrc'
+alias clean="reload && clear"
+
+# Echo to stderr
+alias errcho='>&2 echo'
+
+# Show a spinner (only stops with SIGKILL and SIGTERM)
+spinner() {
+  spinner_states=(' -' ' \' ' |' ' /')
+  time=0
+  interval=0.5
+
+  while :
+    do
+      for state in $spinner_states;
+      do
+        echo -ne $state
+        echo -ne " : ETA $time"
+        echo -ne '\r'
+	sleep $interval
+    ((time += interval))
+      done
+    done
+}
+
+# Runs a command showing a spinner
+# instead of the command output
+spinner_eval() {
+  spinner &
+  PID_spinner=$!
+  # stop the spinner when the execution ends
+  # Clean the line on exit
+  trap "kill -9 $PID_spinner && echo -ne '\033[2K'" EXIT SIGINT SIGKILL
+  $* > /dev/null &
+  PID_eval=$!
+  wait $PID_eval > /dev/null
+}
+
+# Math utils
+hex2dec() {
+  echo "$((16#$1))" # TODO take several arguments
+}
+
+dec2hex() {
+  with_space=`printf "%X " $*`
+  echo ${with_space[1,-2]}
+}
+
+# Request user confirmation
+request_confirmation() {
+  if [[ "$#" -gt 0 ]]
+  then
+    echo "${INFO} $1"
+  fi
+
+  echo -n "(\e[34;1mY\x1b[0mes / \e[34;1mN\x1b[0mo) $QUESTION_MARK "
+
+  while [[ ! "( y Y n N )" =~ " ${ans} " ]]; do
+    read -rs -k 1 ans
+  done
+
+  echo $ans
+
+  if [[ "( y Y )" =~ ${ans} ]]; then
+    unset ans
+    return 0
+  else
+    unset ans
+    return 1
+  fi
+}
+
+help() {
+#TODO General help
+#TODO Module help
+  echo "$ERROR This functionality has not yet been implemented"
+  return 1
+#TODO Command help
+}
