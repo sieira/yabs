@@ -9,7 +9,7 @@ call vundle#begin()
 Bundle 'VundleVim/Vundle.vim'
 
 " The bundles you install will be listed here
-Bundle 'Lokaltog/powerline', {'rtp':  'powerline/bindings/vim'}
+Bundle 'powerline/powerline', {'rtp':  'powerline/bindings/vim'}
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/nerdtree'
 Bundle 'klen/python-mode'
@@ -170,3 +170,4 @@ set visualbell
 set ttyfast
 set backspace=indent,eol,start
 
+call vundle#end()
