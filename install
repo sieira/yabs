@@ -9,17 +9,30 @@ cp --backup=t --suffix=.pre_yabs .zshrc $HOME
 cp -R .yabs $HOME
 source $HOME/.zshrc
 
-if [[ "~/.gitconfig" ]]
-then
-    request_confirmation "do you want to overwrite .gitconfig?" && cp .gitconfig ~
-fi
-
-if [[ "~/.vimrc" ]]
-then
-    request_confirmation "do you want to overwrite .vimrc?" 
-    if [ $? -eq 0 ]
+request_install() {
+    if [[ "$#" -lt 2 ]]
     then
-        cp .vimrc ~
-        # TODO install Bundle and configure vim
+        echo "$ERROR request_install takes at least two parameters"
+        exit 1
     fi
-fi
+
+    CONFIRMATION=true
+
+    if [[ -f "$2" ]]
+    then
+        request_confirmation "Do you want to overwrite $(basename $1) ?"
+        CONFIRMATION=$?
+    fi
+    if [[ $CONFIRMATION -eq 0 ]]
+    then
+        echo "$OK Copying $1 to $2"
+        cp $1 $2
+    else
+        echo "$INDETERMINATE $2 will not be overriden"
+    fi
+
+}
+
+request_install .gitconfig ~/.gitconfig
+request_install .vimrc ~/.vimrc
+request_install powerline/default.json ~/.config/powerline/themes/vim/default.json
