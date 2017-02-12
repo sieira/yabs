@@ -16,6 +16,7 @@ Bundle 'klen/python-mode'
 Bundle 'leshill/vim-json'
 Bundle 'StanAngeloff/php.vim'
 Bundle 'davidhalter/jedi-vim'
+Bundle 'digitaltoad/vim-pug'
 
 filetype plugin indent on
 
@@ -105,6 +106,12 @@ augroup vimrc_autocmds
     autocmd FileType python match Excess /\%101v.*/
     autocmd FileType python set nowrap
     augroup END
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Jade / Pug
+""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufNewFile,BufRead *.pug setlocal ft=pug
+au FileType pug setl sw=2 sts=2 et
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 " Folding and unfolding
