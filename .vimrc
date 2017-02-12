@@ -111,6 +111,8 @@ augroup vimrc_autocmds
 " Jade / Pug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufNewFile,BufRead *.pug setlocal ft=pug
+au BufNewFile,BufRead *.jade setlocal ft=pug
+
 au FileType pug setl sw=2 sts=2 et
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
