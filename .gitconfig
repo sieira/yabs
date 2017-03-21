@@ -1,4 +1,13 @@
+[user]
+    name = @USERNAME@
+    email = @EMAIL@
+
+[core]
+    excludesfile=~/.gitignore
+    editor = vim
+
 [alias]
+    cat = -p cat-file -p
     co = checkout
     ci = commit
     st = status
@@ -6,3 +15,42 @@
     hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
     type = cat-file -t
     dump = cat-file -p
+    pop=reset HEAD~1
+    fixup=commit --amend -C HEAD
+    k = !gitk '^master~200' master origin/master `git symbolic-ref HEAD` `git symbolic-ref HEAD | sed -e 's~refs/heads/~refs/remotes/origin/~'
+    up = !git fetch && git diff --stat HEAD...`git symbolic-ref HEAD | sed -e 's~refs/heads/~origin/~'` && git rebase `git symbolic-ref HEAD | sed -e 's~refs/heads/~origin/~'` && git submodule update
+    send = !git up && git push
+    glog = log --graph
+    tree = log --graph --decorate --abbrev-commit --date-order --pretty=format:'%Cgreen%h%Creset : %s%Cred%d%Creset (%Cblue%an%Creset, %Cblue%ar%Creset)' --all
+    tree-br = log --graph --decorate --abbrev-commit --date-order --pretty=format:'%Cgreen%h%Creset : %s%Cred%d%Creset (%Cblue%an%Creset, %Cblue%ar%Creset)'
+    new-branch = !bash -c 'git push origin HEAD:"$0" && git co "$0"'
+
+[branch]
+    autosetupmerge = always
+
+[diff]
+    tool = vimdiff
+
+[push]
+    default = tracking
+
+[color]
+    diff   = auto
+    branch = auto
+    status = auto
+    pager  = true
+
+[color "diff"]
+    meta = bold black
+    frag = bold cyan
+    old  = bold red
+    new  = bold green
+
+[color "status"]
+    header    = bold black
+    added     = bold green
+    changed   = bold red
+    untracked = white
+
+[merge]
+    tool = vimdiff
