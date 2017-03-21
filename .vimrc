@@ -89,6 +89,7 @@ let g:pymode_virtualenv = 1
 " Enable breakpoints plugin
 let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_bind = '<leader>b'
+let g:pymode_breakpoint_cmd = 'import sys; import pdb; pdb.Pdb(stdout=sys.__stdout__).set_trace()  # XXX breakpoint'
 
 " syntax highlighting
 let g:pymode_syntax = 1
@@ -125,7 +126,7 @@ map ,F :set foldmethod=syntax<cr>zR<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual style
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>n :set number! relativenumber!<cr>
+map <leader>l :set number! relativenumber!<cr>
 set relativenumber  " Show relative line numbers
 set number          " But keep showing the current line number
 " set cursorline    " Underline current line
