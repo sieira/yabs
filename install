@@ -26,7 +26,7 @@ request_install() {
     if [[ $CONFIRMATION -eq 0 ]]
     then
         echo "$OK Copying $1 to $2"
-        cp $1 $2
+        cp -p $1 $2
     else
         echo "$INDETERMINATE $2 will not be overriden"
     fi

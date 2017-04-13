@@ -12,7 +12,7 @@ preexec_functions=()
 export PATH="/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.4"
 
 # Default yabs utils
-FILES=( "yabsrc" "utils" "venvs" "git" "prompt" )
+FILES=( "yabsrc" "utils" "venvs" "git" "prompt" "history")
 
 # Load the files from .yabs in the same path than this script
 for file in $FILES; do
