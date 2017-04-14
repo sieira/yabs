@@ -25,8 +25,9 @@ request_install() {
     fi
     if [[ $CONFIRMATION -eq 0 ]]
     then
+        mkdir -p `dirname $2`
+        cp $1 $2
         echo "$OK Copying $1 to $2"
-        cp -p $1 $2
     else
         echo "$INDETERMINATE $2 will not be overriden"
     fi
