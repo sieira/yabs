@@ -12,11 +12,13 @@ Bundle 'VundleVim/Vundle.vim'
 Bundle 'powerline/powerline', {'rtp':  'powerline/bindings/vim'}
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/nerdtree'
+Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'klen/python-mode'
 Bundle 'leshill/vim-json'
 Bundle 'StanAngeloff/php.vim'
 Bundle 'davidhalter/jedi-vim'
 Bundle 'digitaltoad/vim-pug'
+Bundle 'majutsushi/tagbar'
 
 filetype plugin indent on
 
@@ -122,6 +124,11 @@ au FileType pug setl sw=2 sts=2 et
 " Folding and unfolding
 map ,f :set foldmethod=indent<cr>zM<cr>
 map ,F :set foldmethod=syntax<cr>zR<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ctags
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <F3> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual style
