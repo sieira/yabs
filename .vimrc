@@ -19,6 +19,7 @@ Bundle 'StanAngeloff/php.vim'
 Bundle 'davidhalter/jedi-vim'
 Bundle 'digitaltoad/vim-pug'
 Bundle 'majutsushi/tagbar'
+Bundle 'kien/ctrlp.vim'
 
 filetype plugin indent on
 
