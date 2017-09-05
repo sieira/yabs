@@ -36,4 +36,4 @@ request_install() {
 
 request_install .gitconfig ~/.gitconfig
 request_install .vimrc ~/.vimrc
-request_install powerline/default.json ~/.config/powerline/themes/vim/default.json
+request_install .pylintrc ~/.pylintrc

@@ -1,34 +1,39 @@
 set nocompatible
 filetype off
+syntax on
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+set rtp+=$HOME/.vim/bundle/vundle/
+call vundle#rc()
 
 " let Vundle manage Vundle
 " required! 
-Bundle 'VundleVim/Vundle.vim'
+Bundle 'gmarik/vundle'
 
 " The bundles you install will be listed here
-Bundle 'powerline/powerline', {'rtp':  'powerline/bindings/vim'}
+Bundle 'vim-airline/vim-airline'
+Bundle 'vim-airline/vim-airline-themes'
 Bundle 'tpope/vim-fugitive'
 Bundle 'scrooloose/nerdtree'
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'klen/python-mode'
-Bundle 'leshill/vim-json'
+Bundle 'elzr/vim-json'
 Bundle 'StanAngeloff/php.vim'
 Bundle 'davidhalter/jedi-vim'
 Bundle 'digitaltoad/vim-pug'
 Bundle 'majutsushi/tagbar'
 Bundle 'kien/ctrlp.vim'
+Bundle 'leafgarland/typescript-vim'
 
 filetype plugin indent on
 
-" Powerline setup
-set t_Co=256
-set laststatus=2
+" Airline
+let g:airline_theme='simple'
 
 " Nerd tree
-map <F2> :Lexplore<CR>
+map <F2> :NERDTreeToggle<CR>
+
+" Ctags
+nmap <F3> :TagbarToggle<CR>
 
 " Tabulations
 set modelines=0
@@ -49,16 +54,23 @@ map 0 ^
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+" HTML stuff
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType html set tabstop=2
+autocmd FileType html set shiftwidth=2
+autocmd FileType html set softtabstop=2
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+" JS stuff
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType javascript set tabstop=2
+autocmd FileType javascript set shiftwidth=2
+autocmd FileType javascript set softtabstop=2
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 " Python stuff
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
-" Delete trailing white space on save, useful for Python
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-
 " Python-mode
 " Activate rope
 " Keys:
@@ -73,6 +85,7 @@ endfunc
 " [M            Jump on previous class or method (normal, visual, operator modes)
 " ]M            Jump on next class or method (normal, visual, operator modes)
 let g:pymode_rope = 0 "Disable rope in favour of jedi-vim
+let g:pymode_python = 'python3'
 
 " Documentation
 let g:pymode_doc = 1
@@ -81,6 +94,7 @@ let g:pymode_doc_key = 'K'
 " Linting
 let g:pymode_lint = 1
 let g:pymode_lint_checker = "pyflakes,pep8,pylint"
+let g:pymode_lint_config = "$HOME/.pylintrc"
 let g:pymode_options_max_line_length = 100
 
 " Auto check on save
@@ -92,7 +106,7 @@ let g:pymode_virtualenv = 1
 " Enable breakpoints plugin
 let g:pymode_breakpoint = 1
 let g:pymode_breakpoint_bind = '<leader>b'
-let g:pymode_breakpoint_cmd = 'import sys; import pdb; pdb.Pdb(stdout=sys.__stdout__).set_trace()  # XXX breakpoint'
+let g:pymode_breakpoint_cmd = 'import sys; import pdb; pdb.Pdb(stdout=sys.__stdout__).set_trace()  # XXX breakpoint a la cool'
 
 " syntax highlighting
 let g:pymode_syntax = 1
@@ -100,36 +114,27 @@ let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
-" Don't autofold code
-let g:pymode_folding = 0
-
-augroup vimrc_autocmds
-    autocmd!
-    " highlight characters past column 100
-    autocmd FileType python highlight Excess ctermbg=Red guibg=Red ctermfg=Yellow guifg=Yellow
-    autocmd FileType python match Excess /\%101v.*/
-    autocmd FileType python set nowrap
-    augroup END
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
-" Jade / Pug
+" Jade / Pug stuff
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufNewFile,BufRead *.pug setlocal ft=pug
 au BufNewFile,BufRead *.jade setlocal ft=pug
 
 au FileType pug setl sw=2 sts=2 et
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Typescript stuff
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 " Folding and unfolding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
+" Don't autofold code
+let g:pymode_folding = 0
 " Folding and unfolding
 map ,f :set foldmethod=indent<cr>zM<cr>
 map ,F :set foldmethod=syntax<cr>zR<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ctags
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <F3> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual style
@@ -137,13 +142,22 @@ nmap <F3> :TagbarToggle<CR>
 map <leader>l :set number! relativenumber!<cr>
 set relativenumber  " Show relative line numbers
 set number          " But keep showing the current line number
-" set cursorline    " Underline current line
+" set cursorline      " Underline current line
 set wrap
-set scrolloff=3     " Always show at least three lines around the cursor
+set scrolloff=3
 set textwidth=100
 set formatoptions=qrn1
-" set colorcolumn=100
-colorscheme desert
+set colorcolumn=0
+
+colorscheme newproggie
+
+augroup vimrc_autocmds
+    autocmd!
+    " highlight characters past column 100
+    autocmd FileType python highlight Excess ctermbg=Red guibg=Red
+    autocmd FileType python match Excess /\%101v.*/
+    autocmd FileType python set nowrap
+    augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " TROLL ALERT: Disable keyboard arrows
@@ -164,10 +178,19 @@ nnoremap k gk
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sanitize and clean files
 """""""""""""""""""""""""""""""""""""""""""""""""""""
+" Delete trailing white space
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+
 set encoding=utf-8
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.php :call DeleteTrailingWS()
+autocmd BufWrite *.js :call DeleteTrailingWS()
+autocmd BufWrite *.html :call DeleteTrailingWS()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 " Persistant undo file
@@ -187,5 +210,3 @@ set wildmode=list:longest
 set visualbell
 set ttyfast
 set backspace=indent,eol,start
-
-call vundle#end()
