@@ -62,6 +62,20 @@ autocmd FileType html set shiftwidth=2
 autocmd FileType html set softtabstop=2
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
+" yml stuff
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType yaml set tabstop=2
+autocmd FileType yaml set shiftwidth=2
+autocmd FileType yaml set softtabstop=2
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Typescript stuff
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType typescript set tabstop=2
+autocmd FileType typescript set shiftwidth=2
+autocmd FileType typescript set softtabstop=2
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
 " JS stuff
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType javascript set tabstop=2
