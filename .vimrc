@@ -200,11 +200,12 @@ func! DeleteTrailingWS()
 endfunc
 
 set encoding=utf-8
-autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
-autocmd BufWrite *.php :call DeleteTrailingWS()
-autocmd BufWrite *.js :call DeleteTrailingWS()
 autocmd BufWrite *.html :call DeleteTrailingWS()
+autocmd BufWrite *.js :call DeleteTrailingWS()
+autocmd BufWrite *.php :call DeleteTrailingWS()
+autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.ts :call DeleteTrailingWS()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 " Persistant undo file
