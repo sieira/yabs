@@ -9,6 +9,19 @@ cp --backup=t --suffix=.pre_yabs .zshrc $HOME
 cp -R .yabs $HOME
 source $HOME/.zshrc
 
+check_deps() {
+    for dep in git; do
+        dep_path="$(command -v $dep)"
+        if [[ $? -ne 0 ]]
+        then
+            echo "$ERROR Yabs depend on $dep which is not on your path"
+            exit 1
+        fi
+        echo "$INFO $dep found in $dep_path"
+
+    done
+}
+
 request_install() {
     if [[ "$#" -lt 2 ]]
     then
@@ -34,6 +47,9 @@ request_install() {
 
 }
 
+check_deps
 request_install .gitconfig ~/.gitconfig
 request_install .vimrc ~/.vimrc
 request_install .pylintrc ~/.pylintrc
+clone_github VundleVim/Vundle.vim ~/.vim/bundle/vundle
+vim +BundleInstall +qall

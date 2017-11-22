@@ -24,6 +24,7 @@ Bundle 'majutsushi/tagbar'
 Bundle 'kien/ctrlp.vim'
 Bundle 'leafgarland/typescript-vim'
 Bundle 'vimwiki/vimwiki'
+Bundle 'NewProggie/NewProggie-Color-Scheme'
 
 filetype plugin indent on
 

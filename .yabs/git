@@ -11,6 +11,8 @@
 #     Contains the current git branch after calling set_git_branch
 #
 #  functions:
+#   - clone_github:
+#      Clones a project from github to the designated location
 #   - is_git_repository:
 #     Exit status:
 #      - 0 if the current dir is part of a git repository
@@ -41,7 +43,7 @@ is_git_repository() {
 set_git_branch() {
   git_status="$(git status 2> /dev/null)"
 
-  if [[ ${git_status} =~ "nothing added to commit but untracked files present" || ${git_status} =~ "working directory clean" || "working tree clean" ]]
+  if [[ ${git_status} =~ "nothing added to commit but untracked files present" || ${git_status} =~ "working directory clean" || ${git_status} =~ "working tree clean" ]]
   then
     state=%F{green}
   elif [[ ${git_status} =~ "Changes not staged for commit:" ]]; then
@@ -113,6 +115,35 @@ clean_branches() {
       git stash pop
       echo "\e[32;1m[\u2713]\x1b[0m"
     fi
+}
+
+clone_github() {
+    if [[ "$#" -lt 2 ]]
+    then
+        echo "$ERROR clone_github takes at least two parameters"
+        return 1
+    fi
+
+    CONFIRMATION=true
+
+    if [[ -d $2 ]]
+    then
+        request_confirmation "$2 already exists, do you want to continue?"
+        CONFIRMATION=$?
+        if [[ $CONFIRMATION -ne 0 ]]
+        then
+            echo "$ERROR Cancelled"
+            return 1
+        fi
+    fi
+
+    if [[ -a $2 ]]
+    then
+        echo "$ERROR $2 Exists and is not a directory"
+        return 1
+    fi
+
+    git clone https://github.com/$1 $2
 }
 
 precmd_functions+=('set_git_branch')
