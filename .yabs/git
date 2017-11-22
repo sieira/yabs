@@ -41,7 +41,7 @@ is_git_repository() {
 set_git_branch() {
   git_status="$(git status 2> /dev/null)"
 
-  if [[ ${git_status} =~ "nothing added to commit but untracked files present" || ${git_status} =~ "working directory clean" ]]
+  if [[ ${git_status} =~ "nothing added to commit but untracked files present" || ${git_status} =~ "working directory clean" || "working tree clean" ]]
   then
     state=%F{green}
   elif [[ ${git_status} =~ "Changes not staged for commit:" ]]; then

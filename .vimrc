@@ -23,6 +23,7 @@ Bundle 'digitaltoad/vim-pug'
 Bundle 'majutsushi/tagbar'
 Bundle 'kien/ctrlp.vim'
 Bundle 'leafgarland/typescript-vim'
+Bundle 'vimwiki/vimwiki'
 
 filetype plugin indent on
 
