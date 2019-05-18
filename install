@@ -5,8 +5,16 @@ then
     exit 1
 fi
 
-cp --backup=t --suffix=.pre_yabs .zshrc $HOME
-cp -R .yabs $HOME
+if [[ "$OSTYPE" == darwin* ]]
+then
+    # TODO check that coreutils is installed
+    $(brew --prefix coreutils)/bin/gcp --backup=t --suffix=.pre_yabs .zshrc $HOME
+    cp -R .yabs $HOME
+else
+    cp --backup=t --suffix=.pre_yabs .zshrc $HOME
+    cp -R .yabs $HOME
+fi
+
 source $HOME/.zshrc
 
 check_deps() {

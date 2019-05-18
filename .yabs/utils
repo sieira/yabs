@@ -75,7 +75,13 @@ run_on() {
 }
 
 # Prettify some stuff
-alias ls="ls --color"
+if [[ "$OSTYPE" == darwin* ]]
+then
+  export CLICOLOR=1
+else
+  alias ls="ls --color"
+fi
+
 alias grep="grep --color=auto"
 
 # Reload environment
