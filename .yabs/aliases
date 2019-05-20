@@ -1,3 +1,4 @@
+alias vim="$(brew --prefix vim)/bin/vim"
 alias bim="vim"
 alias ccat="pygmentize -g"
 alias less= "less -r"
