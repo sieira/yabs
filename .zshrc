@@ -9,7 +9,10 @@
 precmd_functions=()
 preexec_functions=()
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.4"
+if [[ "$OSTYPE" == linux* ]]
+then
+    export PATH="/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.4"
+fi
 
 # Default yabs utils
 FILES=( "yabsrc" "utils" "venvs" "git" "prompt" "history" "aliases")
