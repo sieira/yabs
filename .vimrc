@@ -25,6 +25,7 @@ Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'leafgarland/typescript-vim'
 Bundle 'vimwiki/vimwiki'
 Bundle 'NewProggie/NewProggie-Color-Scheme'
+Bundle 'artur-shaik/vim-javacomplete2'
 
 filetype plugin indent on
 
@@ -83,6 +84,24 @@ autocmd FileType typescript set softtabstop=2
 autocmd FileType javascript set tabstop=2
 autocmd FileType javascript set shiftwidth=2
 autocmd FileType javascript set softtabstop=2
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Java stuff
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType java set tabstop=4
+autocmd FileType java set shiftwidth=4
+autocmd FileType java set softtabstop=4
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+
+nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+nmap <F5> <Plug>(JavaComplete-Imports-Add)
+imap <F5> <Plug>(JavaComplete-Imports-Add)
+nmap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+imap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 " Python stuff
