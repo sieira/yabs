@@ -60,5 +60,7 @@ check_deps
 request_install .gitconfig ~/.gitconfig
 request_install .vimrc ~/.vimrc
 request_install .pylintrc ~/.pylintrc
+mkdir ~/.vim/swp
+mkdir ~/.vim/undo
 clone_github VundleVim/Vundle.vim ~/.vim/bundle/vundle
 vim +BundleInstall +qall

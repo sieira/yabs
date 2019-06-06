@@ -229,10 +229,11 @@ autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.ts :call DeleteTrailingWS()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
-" Persistant undo file
+" Persistent undo file and centralized swap
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 set undofile
-set undodir=~/.vim/undo
+set undodir=~/.vim/undo//
+set directory=~/.vim/swp//
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vmwiki
