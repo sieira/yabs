@@ -26,6 +26,10 @@ Bundle 'leafgarland/typescript-vim'
 Bundle 'vimwiki/vimwiki'
 Bundle 'NewProggie/NewProggie-Color-Scheme'
 Bundle 'artur-shaik/vim-javacomplete2'
+Bundle 'mrk21/yaml-vim'
+
+let mapleader = ","
+let g:mapleader = ","
 
 filetype plugin indent on
 
@@ -67,6 +71,7 @@ autocmd FileType html set softtabstop=2
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 " yml stuff
 """""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml set tabstop=2
 autocmd FileType yaml set shiftwidth=2
 autocmd FileType yaml set softtabstop=2
@@ -168,8 +173,8 @@ autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
 " Don't autofold code
 let g:pymode_folding = 0
 " Folding and unfolding
-map ,f :set foldmethod=indent<cr>zM<cr>
-map ,F :set foldmethod=syntax<cr>zR<cr>
+map <leader>f :set foldmethod=indent<cr>zM<cr>
+map <leader>F :set foldmethod=syntax<cr>zR<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual style
@@ -227,6 +232,7 @@ autocmd BufWrite *.js :call DeleteTrailingWS()
 autocmd BufWrite *.php :call DeleteTrailingWS()
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.ts :call DeleteTrailingWS()
+autocmd BufWrite *.yml :call DeleteTrailingWS()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 " Persistent undo file and centralized swap
