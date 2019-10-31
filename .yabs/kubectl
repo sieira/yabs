@@ -14,5 +14,12 @@
 #  aliases:
 
 kubens () {
+    if [[ "$#" -eq 0 ]]
+    then
+        echo ${$(kubectl config view --minify | grep namespace | tr ":" " ")[2]}
+        return 0
+    fi
+
     kubectl config set-context --current --namespace=$1
+    kubens
 }
