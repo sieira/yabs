@@ -1,0 +1,18 @@
+#!/bin/zsh
+#  =============
+#  == kubectl ==
+#  =============
+#
+#  Contains some utilities allowing to ease complex kubectl tasks
+#
+#  envs:
+#
+#  functions:
+#   - kubens:
+#     Switches kubectl namespaces,
+#
+#  aliases:
+
+kubens () {
+    kubectl config set-context --current --namespace=$1
+}

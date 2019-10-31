@@ -15,7 +15,7 @@ then
 fi
 
 # Default yabs utils
-FILES=( "yabsrc" "utils" "venvs" "git" "prompt" "history" "aliases")
+FILES=( "yabsrc" "utils" "venvs" "git" "prompt" "history" "aliases" "kubectl")
 
 # Load the files from .yabs in the same path than this script
 for file in $FILES; do
