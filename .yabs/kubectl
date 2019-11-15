@@ -24,7 +24,7 @@ kubens () {
         do
             if [[ $namespace == $CURRENT_NAMESPACE ]]
             then
-                echo_bold "👉 $namespace"
+                echo_bold "👉 \e[33m$namespace"
             else
                 echo $namespace
             fi
@@ -47,7 +47,7 @@ kubectx () {
         do
             if [[ $context == $CURRENT_CONTEXT ]]
             then
-                echo_bold "👉 $context"
+                echo_bold "👉 \e[33m$context"
             else
                 echo $context
             fi
