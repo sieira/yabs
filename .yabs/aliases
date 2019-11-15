@@ -1,4 +1,7 @@
-alias vim="$(brew --prefix vim)/bin/vim"
+if [[ "$OSTYPE" == darwin* ]]
+then
+    alias vim="$(brew --prefix vim)/bin/vim"
+fi
 alias bim="vim"
 alias ccat="pygmentize -g"
 alias less= "less -r"
