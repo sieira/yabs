@@ -39,7 +39,7 @@ precmd() {
   fi
 }
 
-PROMPT='%F{green}%n%f@%F{blue}%m %F{yellow}%1~$BRANCH%f %# '
+PROMPT='%F{green}%n%f@%F{blue}%m %F{yellow}%1~$BRANCH%f 👉 '
 RPROMPT='(${LAST_TIME_S}s)[%F{yellow}%?%f]'
 
 # Enable autocompletion highlight

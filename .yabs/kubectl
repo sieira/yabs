@@ -8,6 +8,8 @@
 #  envs:
 #
 #  functions:
+#   - kubectx:
+#     Switches kubectl contexts
 #   - kubens:
 #     Switches kubectl namespaces,
 #
@@ -16,10 +18,44 @@
 kubens () {
     if [[ "$#" -eq 0 ]]
     then
-        echo ${$(kubectl config view --minify | grep namespace | tr ":" " ")[2]}
+        CURRENT_NAMESPACE=${$(kubectl config view --minify | grep namespace | tr ":" " ")[2]}
+
+        for namespace in $(kubectl get namespace | sed -e "1d" | awk '{print $1}')
+        do
+            if [[ $namespace == $CURRENT_NAMESPACE ]]
+            then
+                echo_bold "👉 $namespace"
+            else
+                echo $namespace
+            fi
+        done
+
         return 0
     fi
 
-    kubectl config set-context --current --namespace=$1
+    kubectl config set-context --current --namespace=$1 > /dev/null
     kubens
+}
+
+
+kubectx () {
+    if [[ "$#" -eq 0 ]]
+    then
+        CURRENT_CONTEXT=$(kubectl config current-context)
+
+        for context in $(kubectl config get-contexts | sed -e "1d" | sed 's/*/ /' | awk '{print $1}')
+        do
+            if [[ $context == $CURRENT_CONTEXT ]]
+            then
+                echo_bold "👉 $context"
+            else
+                echo $context
+            fi
+        done
+
+        return 0
+    fi
+
+    kubectl config use-context $1 > /dev/null
+    kubectx
 }

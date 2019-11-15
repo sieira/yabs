@@ -23,6 +23,8 @@
 #     echo to stderr
 #
 #  functions:
+#   - echo_bold:
+#     Like echo, but bold... kind of obvious.
 #   - run_on:
 #     Run a command in the given directory (relative to ~),
 #     activating the closest venv if found
@@ -91,8 +93,12 @@ alias clean="reload && clear"
 # Echo to stderr
 alias errcho='>&2 echo'
 
+echo_bold () {
+    echo "\e[1m"$@"\e[0m"
+}
+
 # Show a spinner (only stops with SIGKILL and SIGTERM)
-spinner() {
+spinner () {
   spinner_states=(' -' ' \' ' |' ' /')
   time=0
   interval=0.5

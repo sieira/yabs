@@ -95,25 +95,25 @@ clean_branches() {
 
     if [ $BRANCH != "master" ]
     then
-      echo "\e[33m[i]\x1b[0m Temporarily moving to master..."
+      echo -n "$INFO Temporarily moving to master... "
       git stash &> /dev/null
       git checkout master &> /dev/null
-      echo "\e[32;1m[\u2713]\x1b[0m"
+      echo "$OK"
     fi
 
-    echo -n "deleting merged branches..."
+    printf "deleting merged branches... "
     for b in $(git branch -a --merged)
     do
         git br -d "$b" &>/dev/null
     done
-    echo "\e[32;1m[\u2713]\x1b[0m"
+    echo "$OK"
 
     if [ $(git branch | grep --color=none -c "^\  $BRANCH$") -gt 0 ]
     then
-      echo "\e[33m[i]\x1b[0m Switching back to " $BRANCH "..."
-      git checkout $BRANCH
-      git stash pop
-      echo "\e[32;1m[\u2713]\x1b[0m"
+      printf "$INFO Switching back to $BRANCH... "
+      git checkout $BRANCH &> /dev/null
+      git stash pop &> /dev/null
+      echo "$OK"
     fi
 }
 
