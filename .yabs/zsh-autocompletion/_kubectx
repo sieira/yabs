@@ -1,0 +1,6 @@
+#compdef _kubctx kubectx
+_kubectx () {
+    local completion_options="${(@f)$(kubectl config get-contexts | sed -e "1d" | sed 's/*/ /' | awk '{print $1}')}"
+    _arguments -C \
+        "1: :($completion_options)"
+}

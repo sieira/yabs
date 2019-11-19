@@ -29,5 +29,11 @@ for extension in ${yabs_extensions}; do
   fi
 done
 
+# Load autocompletion
+typeset -U fpath
+fpath+=("$HOME/.yabs/zsh-autocompletion")
+autoload -U compinit
+compinit
+
 # Clean env
 unset FILES

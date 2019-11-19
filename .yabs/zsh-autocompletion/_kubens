@@ -1,0 +1,6 @@
+#compdef _kubens kubens
+_kubens () {
+    local completion_options="${(@f)$(kubectl get namespace | sed -e "1d" | awk '{print $1}')}"
+    _arguments -C \
+        "1: :($completion_options)"
+}
