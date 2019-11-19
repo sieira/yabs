@@ -18,8 +18,16 @@ fi
 source $HOME/.zshrc
 
 check_deps() {
-    # TODO add brew as mac dep
-    for dep in git; do
+    local dependencies=(git)
+    typeset -U dependencies
+
+
+    if [[ "$OSTYPE" == darwin* ]]
+    then
+        dependencies+=brew
+    fi
+
+    for dep in $dependencies; do
         dep_path="$(command -v $dep)"
         if [[ $? -ne 0 ]]
         then
@@ -27,7 +35,6 @@ check_deps() {
             exit 1
         fi
         echo "$INFO $dep found in $dep_path"
-
     done
 }
 
