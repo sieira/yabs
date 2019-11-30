@@ -165,7 +165,7 @@ au FileType pug setl sw=2 sts=2 et
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Typescript stuff
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufNewFile,BufRead *.ts setlocal filetype=typescript
+autocmd BufNewFile,BufRead *.{ts,tsx} setlocal filetype=typescript
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""
 " Folding and unfolding
