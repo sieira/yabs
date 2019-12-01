@@ -27,6 +27,7 @@ Bundle 'vimwiki/vimwiki'
 Bundle 'NewProggie/NewProggie-Color-Scheme'
 Bundle 'artur-shaik/vim-javacomplete2'
 Bundle 'mrk21/yaml-vim'
+Bundle 'maxmellon/vim-jsx-pretty'
 
 let mapleader = ","
 let g:mapleader = ","
