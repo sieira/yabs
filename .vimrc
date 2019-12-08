@@ -233,6 +233,7 @@ autocmd BufWrite *.js :call DeleteTrailingWS()
 autocmd BufWrite *.php :call DeleteTrailingWS()
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.ts :call DeleteTrailingWS()
+autocmd BufWrite *.tsx :call DeleteTrailingWS()
 autocmd BufWrite *.yml :call DeleteTrailingWS()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
