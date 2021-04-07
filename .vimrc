@@ -65,9 +65,9 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 " HTML stuff
 """""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType html set tabstop=2
-autocmd FileType html set shiftwidth=2
-autocmd FileType html set softtabstop=2
+autocmd FileType html,xml set tabstop=2
+autocmd FileType html,xml set shiftwidth=2
+autocmd FileType html,xml set softtabstop=2
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 " yml stuff
@@ -134,8 +134,8 @@ let g:pymode_doc_key = 'K'
 
 " Linting
 let g:pymode_lint = 1
-let g:pymode_lint_checker = "pyflakes,pep8,pylint"
-let g:pymode_lint_config = "$HOME/.pylintrc"
+let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'pylint']
+let g:pymode_lint_config = '$HOME/.pylintrc'
 let g:pymode_options_max_line_length = 100
 
 " Auto check on save
@@ -233,7 +233,6 @@ autocmd BufWrite *.js :call DeleteTrailingWS()
 autocmd BufWrite *.php :call DeleteTrailingWS()
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.ts :call DeleteTrailingWS()
-autocmd BufWrite *.tsx :call DeleteTrailingWS()
 autocmd BufWrite *.yml :call DeleteTrailingWS()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""
