@@ -134,9 +134,11 @@ let g:pymode_doc_key = 'K'
 
 " Linting
 let g:pymode_lint = 1
+" let g:pymode_debug = 1
 let g:pymode_lint_checkers = ['pep8', 'pylint']
 let g:pymode_lint_config = '$HOME/.pylintrc'
 let g:pymode_options_max_line_length = 100
+let g:pymode_lint_options_pylint = {'clear_cache': 1}
 
 " Auto check on save
 let g:pymode_lint_write = 1
