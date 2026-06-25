@@ -26,13 +26,13 @@
     new-branch = !bash -c 'git push origin HEAD:"$0" && git co "$0"'
 
 [branch]
-    autosetupmerge = always
+    autosetupmerge = true
 
 [diff]
     tool = vimdiff
 
 [push]
-    default = tracking
+    default = current
 
 [color]
     diff   = auto
